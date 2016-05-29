@@ -1,0 +1,33 @@
+"3.9 (created: 2015/02/15 15:49:05)
+
+source! /Users/kirIn/.vimperatorrc.local
+
+" スクロールの端などの際に出るbeepをoff
+set nobeep
+
+" デフォルトの検索エンジン
+set defsearch=google
+
+" 検索結果をハイライト
+set hlsearch
+" 検索の大文字小文字を無視
+set ignorecase
+
+" カラースキーマ
+colorscheme vimpwhite
+
+" スクロール幅
+"map j 3<C-e>
+"map k 3<C-y>
+nnoremap j 5j
+nnoremap k 5k
+" ddでタブを閉じる, dでは何もしない
+no dd :tabclose<CR>
+map d <NOP>
+
+"Backspaceを無効化する。
+map <BS> ""
+"正常に読み込めたことを通知する。
+echo ".vimperatorrc sourced"
+
+" vim: set ft=vimperator:
