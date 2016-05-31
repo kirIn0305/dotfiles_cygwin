@@ -1,40 +1,41 @@
-"neobundle setting
+" Note: Skip initialization for vim-tiny or vim-small.
+if 0 | endif
+
+filetype off
+
 if has('vim_starting')
-	set nocompatible
-	set runtimepath+=~/.vim/bundle/neobundle.vim
-endif
+  if &compatible
+      set nocompatible               " Be iMproved
+        endif
 
-call neobundle#begin(expand('~/.vim/bundle'))
+  set runtimepath+=~/.vim/bundle/neobundle.vim
+  endif
 
-"neobundle.vim自身をneobundle.vimで管理
-NeoBundleFetch 'Shougo/neobundle.vim'
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"ここにインストールしたいプラグインを設定する
-" : help neobundle-examples
-NeoBundle 'vim-jp/vimdoc-ja'
-NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make -f make_mac.mak',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
+" originalrepos on github
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/vimproc', {
+  \ 'build' : {
+  \ 'windows' : 'make -f make_mingw32.mak',
+  \ 'cygwin' : 'make -f make_cygwin.mak',
+  \ 'mac' : 'make -f make_mac.mak',
+  \ 'unix' : 'make -f make_unix.mak',
+	\ },
 \ }
+NeoBundle 'VimClojure'
+NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimshell.vim'
+NeoBundle 'ujihisa/unite-colorscheme'
+"NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neosnippet'
-" NeoBundle 'junegunn/seoul256.vim'
-" NeoBundle 'w0ng/vim-hybrid'
-" NeoBundle 'lervag/vim-latex'
-" NeoBundle 'vim-latex/vim-latex'
-NeoBundle 'Lokaltog/vim-powerline'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'aklt/plantuml-syntax'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'jpalardy/vim-slime'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Shougo/vimfiler.vim'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 't9md/vim-textmanip'
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
@@ -43,32 +44,18 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'h1mesuke/vim-alignta'
-NeoBundle 'yuratomo/w3m.vim'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+NeoBundle 'tomasr/molokai'
+NeoBundle 'nachumk/systemverilog.vim'
+""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
 call neobundle#end()
 
-filetype plugin indent on
+filetype plugin indent on     " required!
+filetype indent on
+syntax on
 
-"プラグインがインストールされているかチェック
 NeoBundleCheck
 
-if !has('vim_starting')
-	" .vimrcを読み直した時のための設定
-	call neobundle#call_hook('on_source')
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Scratch window 非表示
-set completeopt=menuone
-"プラグインの設定
-"vimdoc-ja
-set helplang=ja,en
-"colorscheme
-colorscheme molokai
-let g:molokai_original=1
-let g:rehash256=1
-set background=dark
 
 "unite.vim
 let g:unite_enable_start_insert=1
@@ -80,7 +67,7 @@ nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> ,uu :<C-u>Unite file_mru buffer<CR>
 
-"neocomplete
+""neocomplete
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_ignore_case = 1
 let g:neocomplete#enable_smart_case = 1
@@ -99,24 +86,25 @@ imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-l> <Plug>(neosnippet_expand_target)
 snoremap <CR> <BS>i
-"SuperTab like snippets behavior.
+""SuperTab like snippets behavior.
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: "\<TAB>"
-  
+
 "For snippet_complete marker.
 if has('conceal')
 set conceallevel=2 concealcursor=i
 endif
 let g:neosnippet#snippets_directory='~/.vim/mysnippet' 
 
+
 "vim indent guide on
-" vim立ち上げたときに、自動的にvim-indent-guidesをオンにする
+"" vim立ち上げたときに、自動的にvim-indent-guidesをオンにする
 let g:indent_guides_enable_on_vim_startup=1
-" ガイドをスタートするインデントの量
+"ガイドをスタートするインデントの量
 let g:indent_guides_start_level=2
 " 自動カラーを無効にする
 let g:indent_guides_auto_colors=0
@@ -129,9 +117,10 @@ let g:indent_guides_color_change_percent = 30
 " ガイドの幅
 let g:indent_guides_guide_size = 1
 
+
 "vim-quickrun
-" let g:quickrun_config={'_': {'split': 'vertical'}}
-" let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
+"let g:quickrun_config={'_': {'split': 'vertical'}}
+"let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
 
 let g:quickrun_config = {}
 let g:quickrun_config['_'] = {
@@ -165,15 +154,21 @@ let g:quickrun_config['python'] = {
 \   "exec" : '%c %s'
 \   }
 
-
-"vim-markdown 
+""vim-markdown 
 au BufRead,BufNewFile *.md set filetype=markdown
 
-"previm
-let g:previm_open_cmd='open -a "Google Chrome"'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""previm
+let g:previm_open_cmd='cygstart'
 
-"my setting
+
+set helplang=ja,en
+colorscheme
+colorscheme molokai
+let g:molokai_original=1
+let g:rehash256=1
+set background=dark
+
+
 set encoding=utf-8
 
 set number
@@ -187,44 +182,10 @@ set tabstop=4
 set shiftwidth=4
 set nobackup
 set noswapfile
-set backspace=indent,eol,start
-"for cron
-set backupskip=/tmp/*,/private/tmp/*
 set smarttab
 set expandtab
 
-set clipboard+=autoselect
-set clipboard+=unnamed
-"hi CursorLine term=reverse cterm=none ctermbg=233
-syntax on
 
-"INSERTMODE
-let g:hi_insert  = 'highlight StatusLine guifg=darkblue guibg=darkblue gui=none ctermfg=blue ctermbg=darkblue cterm=none'
-if has('syntax')
-    augroup InsertHook
-        autocmd!
-        autocmd InsertEnter * call s:StatusLine('Enter')
-        autocmd InsertLeave * call s:StatusLine('Leave')
-    augroup END
-endif
-let s:slhlcmd = ''
-function! s:StatusLine(mode)
-    if a:mode == 'Enter'
-        silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-        silent exec g:hi_insert
-    else
-        highlight clear StatusLine
-        silent exec s:slhlcmd
-    endif
-endfunction
-function! s:GetHighlight(hi)
-    redir => hl
-    exec 'highlight '.a:hi
-    redir END
-    let hl = substitute(hl, '[\r\n]', '', 'g')
-    let hl = substitute(hl, 'xxx', '', '')
-    return hl
-endfunction
-
+""""" map
 "markdown
 vnoremap <leader>mdu ygvs[](<c-r>")<esc>?[]<cr>a
