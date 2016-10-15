@@ -31,7 +31,7 @@ bindkey -e
 export TMUX_TMPDIR=/var/run/tmux
 
 ## Python
-PYTHON_VERSION=Anaconda2
+PYTHON_VERSION=Anaconda3
 #export PATH=/cygdrive/c/Users/kirIn-win/$PYTHON_VERSION/:/cygdrive/c/Users/kirIn-win/$PYTHON_VERSION/Scripts/:$PATH
 export PATH=/cygdrive/c/Users/kirIn-win/$PYTHON_VERSION:$PATH
 

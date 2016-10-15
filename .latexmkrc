@@ -1,4 +1,4 @@
-$latex='platex -kanji=utf8 -guess-input-enc -synctex=1 -interaction=nonstopmode %S';
+$latex='uplatex -src-specials -guess-input-enc -synctex=1 -interaction=nonstopmode %S';
 $dvipdf='dvipdfmx %S';
-$bibtex='pbibtex -kanji=utf8 %B';
-$pdf_update_command = 'open -a Preview %S';
+$bibtex='upbibtex -kanji=utf8 %B';
+$pdf_update_command = 'cygstart %S';
